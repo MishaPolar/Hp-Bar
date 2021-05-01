@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class HpCount : MonoBehaviour
 {
     [SerializeField] private int _maxHp = 100;
+    [SerializeField] private HpChanged _hpChanged;
 
-    private int _hp;
-    public int Hp { get => _hp;}
+    private int _hp = 0;
 
     private void Start()
     {
         _hp = _maxHp;
+        _hpChanged.Invoke(_hp);
     }
 
     public void ChangeHp(int changeValue)
@@ -20,5 +21,9 @@ public class HpCount : MonoBehaviour
             _hp = _maxHp;
         else if (_hp < 0)
             _hp = 0;
+        _hpChanged.Invoke(_hp);
     }
 }
+
+[System.Serializable]
+public class HpChanged : UnityEvent<int> { }
